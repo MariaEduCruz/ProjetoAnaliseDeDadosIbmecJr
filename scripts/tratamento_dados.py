@@ -50,6 +50,17 @@ try:
         print("\nDataFrame final com colunas de análise:")
         print(df_voos[['data_hora_chegada', 'dia_da_semana', 'hora_da_chegada']].head())
 
+        # --- ANÁLISE 1 - VOOS DA MADRUGADA POR DIA DA SEMANA ---
+
+        print("\n--- ANÁLISE: Voos chegando de madrugada (00:00 às 06:00) ---")
+
+        voos_madrugada = df_voos[df_voos['hora_da_chegada'] < 6].copy()
+
+        contagem_por_dia = voos_madrugada.groupby('dia_da_semana').size().sort_values(ascending=False)
+
+        print("\nResultado: Contagem de voos por dia da semana na madrugada:")
+        print(contagem_por_dia)
+
 except Error as e:
     print(f"Ocorreu um erro: {e}")
 
