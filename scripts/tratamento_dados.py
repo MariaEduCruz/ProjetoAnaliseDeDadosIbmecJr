@@ -39,6 +39,17 @@ try:
         print("\nVisualizando a coluna de data e hora final:")
         print(df_voos[['data_chegada', 'h_chegada', 'data_hora_chegada']].head())
 
+        # --- EXTRAIR INFORMAÇÕES DA DATA ---
+
+        print("\n--- Extraindo dia da semana e hora ---")
+
+        df_voos['dia_da_semana'] = df_voos['data_hora_chegada'].dt.day_name()
+
+        df_voos['hora_da_chegada'] = df_voos['data_hora_chegada'].dt.hour
+
+        print("\nDataFrame final com colunas de análise:")
+        print(df_voos[['data_hora_chegada', 'dia_da_semana', 'hora_da_chegada']].head())
+
 except Error as e:
     print(f"Ocorreu um erro: {e}")
 
