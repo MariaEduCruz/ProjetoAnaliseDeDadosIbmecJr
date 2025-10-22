@@ -1,10 +1,13 @@
+import os
 import pandas as pd
 import mysql.connector
 from mysql.connector import Error
+from dotenv import load_dotenv
 
 # --- CONECTANDO O BANCO DE DADOS ---
 
-db_password = 'Ibmecjr@123'
+load_dotenv()
+db_password = os.getenv('DB_KEY')
 
 try:
     conexao = mysql.connector.connect(
