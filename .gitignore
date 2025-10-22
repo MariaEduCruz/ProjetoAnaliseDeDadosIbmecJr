@@ -1,5 +1,13 @@
 # .gitignore file
 
-# Environment variables
+# Environment variables and virtual environments
 .env
 .venv
+venv/
+
+# Arquivos temporários do Python
+__pycache__/
+
+# Arquivos de dados gerados (não devem ser versionados)
+*.xlsx
+*.csv
