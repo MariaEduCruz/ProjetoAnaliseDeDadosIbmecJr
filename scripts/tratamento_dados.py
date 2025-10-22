@@ -12,7 +12,7 @@ try:
         port=3306,
         user='root',
         password=db_password,
-        database='aviacao_db'
+        database='aviacao_db_backup'
     )
 
     if conexao.is_connected():
@@ -26,6 +26,18 @@ try:
 
         print("\nDados carregados! As 5 primeiras linhas são:")
         print(df_voos.head())
+
+        # --- TRATAMENTO DE DATA E HORA ---
+
+        print("\n--- Iniciando tratamento de data e hora ---")
+
+        df_voos['data_hora_chegada'] = pd.to_datetime(df_voos['data_chegada']) + df_voos['h_chegada']
+
+        print("\nVerificando os tipos de dados das colunas:")
+        print(df_voos.info())
+
+        print("\nVisualizando a coluna de data e hora final:")
+        print(df_voos[['data_chegada', 'h_chegada', 'data_hora_chegada']].head())
 
 except Error as e:
     print(f"Ocorreu um erro: {e}")
