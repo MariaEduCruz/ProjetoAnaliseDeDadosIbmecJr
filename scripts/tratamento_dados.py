@@ -103,6 +103,19 @@ try:
         print("\nDados para Gráfico 3 (Top 10 Companhias):")
         print(total_por_companhia.head(10))
 
+        # --- EXPORTAR RESULTADOS PARA EXCEL ---
+
+        print("\n--- Exportando dados para o arquivo Excel... ---")
+
+        # ExcelWriter salva várias tabelas em abas diferentes de um mesmo arquivo
+        with pd.ExcelWriter('dados_para_dashboard.xlsx') as writer:
+            heatmap_data.to_excel(writer, sheet_name='Pico_Dia_Hora')
+            total_por_dia.to_excel(writer, sheet_name='Total_por_Dia')
+            total_por_hora.to_excel(writer, sheet_name='Total_por_Hora')
+            total_por_companhia.to_excel(writer, sheet_name='Total_por_Companhia')
+            df_completo.to_excel(writer, sheet_name='Dados_Completos_Tratados', index=False)
+
+        print("\nArquivo 'dados_para_dashboard.xlsx' criado com sucesso na pasta do projeto!")
 
 except Error as e:
     print(f"Ocorreu um erro: {e}")
