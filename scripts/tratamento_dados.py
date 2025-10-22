@@ -61,6 +61,23 @@ try:
         print("\nResultado: Contagem de voos por dia da semana na madrugada:")
         print(contagem_por_dia)
 
+        # --- PASSO 6: ANÁLISE 2 - PICO DE VOOS (MOTORISTAS) ---
+
+        print("\n--- ANÁLISE 2: Concentração de voos por dia e hora ---")
+
+        # Agrupamos por dia E por hora, contamos os voos e mostramos os 10 horários de pico
+        pico_voos = df_voos.groupby(['dia_da_semana', 'hora_da_chegada']).size()
+
+        print("\nTop 10 horários de pico (Dia/Hora):")
+        print(pico_voos.sort_values(ascending=False).head(10))
+
+        # Para facilitar a visualização no Power BI, vamos criar uma tabela "heatmap"
+        # onde as linhas são os dias e as colunas são as horas.
+        heatmap_data = pico_voos.unstack(fill_value=0)
+
+        print("\nTabela de concentração de voos:")
+        print(heatmap_data)
+
 except Error as e:
     print(f"Ocorreu um erro: {e}")
 
