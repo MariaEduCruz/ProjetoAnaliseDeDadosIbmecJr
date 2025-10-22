@@ -61,22 +61,48 @@ try:
         print("\nResultado: Contagem de voos por dia da semana na madrugada:")
         print(contagem_por_dia)
 
-        # --- PASSO 6: ANÁLISE 2 - PICO DE VOOS (MOTORISTAS) ---
+        # --- ANÁLISE 2 - PICO DE VOOS (MOTORISTAS) ---
 
         print("\n--- ANÁLISE 2: Concentração de voos por dia e hora ---")
 
-        # Agrupamos por dia E por hora, contamos os voos e mostramos os 10 horários de pico
         pico_voos = df_voos.groupby(['dia_da_semana', 'hora_da_chegada']).size()
 
         print("\nTop 10 horários de pico (Dia/Hora):")
         print(pico_voos.sort_values(ascending=False).head(10))
 
-        # Para facilitar a visualização no Power BI, vamos criar uma tabela "heatmap"
-        # onde as linhas são os dias e as colunas são as horas.
         heatmap_data = pico_voos.unstack(fill_value=0)
 
         print("\nTabela de concentração de voos:")
         print(heatmap_data)
+
+        # --- PREPARAR DADOS PARA OS GRÁFICOS DO DASHBOARD ---
+
+        print("\n--- Preparando dados para os gráficos do dashboard ---")
+
+        # Gráfico 1: Total de voos por dia da semana
+        dias_ordenados_en = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        total_por_dia = df_voos['dia_da_semana'].value_counts().reindex(dias_ordenados_en, fill_value=0)
+        print("\nDados para Gráfico 1 (Total por Dia):")
+        print(total_por_dia)
+
+
+        # Gráfico 2: Total de voos por hora do dia
+        total_por_hora = df_voos.groupby('hora_da_chegada').size()
+        print("\nDados para Gráfico 2 (Total por Hora):")
+        print(total_por_hora)
+
+
+        # Gráfico 3: Total de voos por Companhia Aérea
+        print("\nBuscando nomes das companhias aéreas...")
+        sql_companhias = "SELECT icao, nome FROM companhia"
+        df_companhias = pd.read_sql(sql_companhias, conexao)
+
+        df_completo = pd.merge(df_voos, df_companhias, left_on='companhia_icao', right_on='icao', how='left')
+
+        total_por_companhia = df_completo.groupby('nome').size().sort_values(ascending=False)
+        print("\nDados para Gráfico 3 (Top 10 Companhias):")
+        print(total_por_companhia.head(10))
+
 
 except Error as e:
     print(f"Ocorreu um erro: {e}")
